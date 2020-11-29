@@ -1,0 +1,18 @@
+{
+    "name": "aethletic/kinopoisk-parser",
+    "description": "Kinopoisk Parser",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "aethletic",
+            "email": "hello@botify.ru"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Kinopoisk\\": "src/"
+        }
+    }
+}
