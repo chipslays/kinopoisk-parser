@@ -72,41 +72,41 @@ class Client
 
     public function getFilmById($filmId, $attempts = 1)
     {
-        // $this->attempts++;
+        $this->attempts++;
 
-        // $response = $this->http->get("/film/{$filmId}", [
-        //     'headers' => array_merge(self::FILM_HEADERS, ['User-Agent' => $this->userAgent]),
-        //     'http_errors' => false,
-        // ]);
+        $response = $this->http->get("/film/{$filmId}", [
+            'headers' => array_merge(self::FILM_HEADERS, ['User-Agent' => $this->userAgent]),
+            'http_errors' => false,
+        ]);
 
-        // if ($this->hasErrors($response)) {
-        //     return $this->getErrors();
-        // }
+        if ($this->hasErrors($response)) {
+            return $this->getErrors();
+        }
 
-        // $body = (string) $response->getBody();
+        $body = (string) $response->getBody();
         
-        // if (stripos($body, '__NEXT_DATA__') == false) {
-        //     $this->torServiceRestart();
-        //     return $this->attempts < $attempts ? $this->getFilmById($filmId) : false;
-        // }
+        if (stripos($body, '__NEXT_DATA__') == false) {
+            $this->torServiceRestart();
+            return $this->attempts < $attempts ? $this->getFilmById($filmId) : false;
+        }
 
-        // $document = new Document($body);
-        // $text = $document->first('#__NEXT_DATA__')->text();
-        // $text = mb_convert_encoding($text, 'UTF-8', "HTML-ENTITIES");
-        // $data = json_decode($text, true);
+        $document = new Document($body);
+        $text = $document->first('#__NEXT_DATA__')->text();
+        $text = mb_convert_encoding($text, 'UTF-8', "HTML-ENTITIES");
+        $data = json_decode($text, true);
 
-        // $text = $document->first('script[type="application/ld+json"]')->text();
-        // $text = mb_convert_encoding($text, 'UTF-8', "HTML-ENTITIES");
-        // $schema = json_decode($text, true);
+        $text = $document->first('script[type="application/ld+json"]')->text();
+        $text = mb_convert_encoding($text, 'UTF-8', "HTML-ENTITIES");
+        $schema = json_decode($text, true);
 
-        // file_put_contents(__DIR__.'/data.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
-        // file_put_contents(__DIR__.'/schema.json', json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        file_put_contents(__DIR__.'/data.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        file_put_contents(__DIR__.'/schema.json', json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         // debug start
-        $text = file_get_contents(__DIR__.'/data.json');
-        $data = json_decode($text, true);
-        $text = file_get_contents(__DIR__.'/schema.json');
-        $schema = json_decode($text, true);
+        // $text = file_get_contents(__DIR__.'/data.json');
+        // $data = json_decode($text, true);
+        // $text = file_get_contents(__DIR__.'/schema.json');
+        // $schema = json_decode($text, true);
         // debug end
         
         $data = new Collection($data);
