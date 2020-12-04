@@ -156,7 +156,7 @@ class Client
                 'short' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.shortDescription', false)->first(),
             ],
             'image' => [
-                'poster' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.posterUrl', false)->first(),
+                'poster' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.posterUrl', null)->first() ?? $schema->get('image', false)->first(),
                 'posterPrimaryColor' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.posterMedianColor', false)->first(),
                 'cover' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.coverUrl', false)->first(),
                 'coverColorTheme' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.coverLogoRecommendedTheme', false)->first(),
@@ -206,6 +206,7 @@ class Client
             ],
             'genre' => $data->get("props.apolloState.data", false)->map(function ($item, $key) use ($filmId) {
                 if (stripos($key, "Film:{$filmId}.genres") !== false) {
+                    print_r($item);
                     return [
                         'id' => $item['id'],
                         'name' => mb_ucfirst($item['name']),
@@ -214,7 +215,7 @@ class Client
                 }
                 return null;
             })->filter()->values()->toArray(),
-            'country' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.countries', [])->first() ?? $schema->get('countryOfOrigin', false)->first(),
+            'country' => $data->get('props.initialState.entities.movieOnlineViewOption.*.contentMetadata.countries', [])->first() ?? $schema->get('countryOfOrigin', false)->toArray(),
             'trailer' => $data->get('props.initialState.entities.movieOnlineViewOption.*.trailers.*', false)->map(function ($item) {
                 return [
                     'main' => (bool) $item['main'],
