@@ -1,12 +1,12 @@
 {
-    "name": "aethletic/kinopoisk-parser",
+    "name": "chipslays/kinopoisk-parser",
     "description": "Kinopoisk Parser",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "aethletic",
-            "email": "hello@botify.ru"
+            "name": "chipslays",
+            "email": "hello@chipslays.ru"
         }
     ],
     "require": {
